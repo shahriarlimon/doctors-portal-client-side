@@ -7,14 +7,14 @@ const Treatments = ({ date }) => {
   const [treatments, setTreatments] = useState([]);
   const [selectedTreatment, setSelectedTreatment] = useState(null);
   useEffect(() => {
-    fetch("treatments.json")
+    fetch("http://localhost:5000/treatments")
       .then((res) => res.json())
       .then((data) => setTreatments(data));
   }, []);
   return (
     <div>
       <p className="text-2xl font-bold text-center text-secondary">
-        Available Appoinments On {format(date, "PP")}
+        Available Appointments On {format(date, "PP")}
       </p>
       ;
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
