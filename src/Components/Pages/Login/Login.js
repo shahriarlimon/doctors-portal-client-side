@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import auth from "../../../firebaseConfigInit";
+import useToken from "../../Hooks/useToken";
 import {
   useSignInWithEmailAndPassword, useSignInWithGoogle, 
 } from "react-firebase-hooks/auth";
@@ -19,16 +20,17 @@ const Login = () => {
   let signInError;
   let location = useLocation();
   const navigate = useNavigate();
+  const [token] = useToken(user || googleuser)
   let from = location.state?.from?.pathname || "/";
-  const onSubmit = (data) => {
-    signInWithEmailAndPassword(data.email, data.password);
-  };
+  useEffect(()=>{
+    if(token){
+      navigate(from, { replace: true });
+    }
+  },[token,navigate,from])
   if (loading || googleloading) {
     return <Loading />;
   }
-  if(user || googleuser){
-    navigate(from, { replace: true });
-  }
+
   
   if (error || googleerror) {
     signInError = (
@@ -37,6 +39,10 @@ const Login = () => {
       </p>
     );
   }
+  const onSubmit = (data) => {
+    signInWithEmailAndPassword(data.email, data.password);
+  };
+  
 
   return (
     <div className="flex h-screen items-center justify-center">

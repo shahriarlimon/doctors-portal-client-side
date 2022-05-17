@@ -6,6 +6,10 @@ import auth from '../../firebaseConfigInit';
 
 const Navbar = () => {
   const [user] = useAuthState(auth);
+  const logout = () =>{
+    localStorage.removeItem('accessToken');
+    signOut(auth);
+  }
     return (
         <div class="navbar font-[Open Sans]">
         <div class="navbar-start">
@@ -17,9 +21,12 @@ const Navbar = () => {
             <li><Link to = "/">Home</Link></li>
             <li><Link to = "/about">About</Link></li>
             <li><Link to = "/appointment">Appointment</Link></li>
+            {
+              user && <li><Link to = "/dashboard">Dashboard</Link></li>
+            }
             <li><Link to = "/reviews">Reviews</Link></li>
             <li><Link to = "/contact">Contact Us</Link></li>
-           { user? <button onClick={()=>signOut(auth)} class="btn btn-active btn-ghost">Logout</button>:<li><Link to = "/login">Login</Link></li>
+           { user? <button onClick={()=>logout()} class="btn btn-active btn-ghost">Logout</button>:<li><Link to = "/login">Login</Link></li>
           }
             </ul>
           </div>
@@ -30,12 +37,21 @@ const Navbar = () => {
           <li><Link to = "/">Home</Link></li>
             <li><Link to = "/about">About</Link></li>
             <li><Link to = "/appointment">Appointment</Link></li>
+            {
+              user && <li><Link to = "/dashboard">Dashboard</Link></li>
+            }
             <li><Link to = "/reviews">Reviews</Link></li>
             <li><Link to = "/contact">Contact Us</Link></li>
-            { user? <button onClick={()=>signOut(auth)} class="btn btn-active btn-ghost">Logout</button>:<li><Link to = "/login">Login</Link></li>
+            { user? <button onClick={()=>logout()} class="btn btn-active btn-ghost">Logout</button>:<li><Link to = "/login">Login</Link></li>
           }
           </ul>
         </div>
+        <div className='navbar-end lg:hidden'>
+        <label tabindex="1" for="side-bar" class="btn btn-ghost lg:hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+            </label>
+        </div>
+        
       </div>
     );
 };
